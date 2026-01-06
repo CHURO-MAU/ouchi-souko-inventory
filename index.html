@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日用品在庫管理アプリ</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📦 日用品在庫管理</h1>
+        </header>
+
+        <div class="add-item-section">
+            <h2>新しい日用品を追加</h2>
+            <form id="add-item-form">
+                <div class="form-group">
+                    <label for="item-name">商品名</label>
+                    <input type="text" id="item-name" placeholder="例: トイレットペーパー" required>
+                </div>
+                <div class="form-group">
+                    <label for="item-quantity">在庫数</label>
+                    <input type="number" id="item-quantity" min="0" placeholder="例: 10" required>
+                </div>
+                <div class="form-group">
+                    <label for="item-min-quantity">最低在庫数</label>
+                    <input type="number" id="item-min-quantity" min="0" placeholder="例: 3" required>
+                </div>
+                <div class="form-group">
+                    <label for="item-category">カテゴリ</label>
+                    <select id="item-category">
+                        <option value="日用品">日用品</option>
+                        <option value="食品">食品</option>
+                        <option value="洗剤">洗剤</option>
+                        <option value="衛生用品">衛生用品</option>
+                        <option value="その他">その他</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">追加</button>
+            </form>
+        </div>
+
+        <div class="filter-section">
+            <h2>在庫一覧</h2>
+            <div class="filter-controls">
+                <select id="category-filter">
+                    <option value="all">すべてのカテゴリ</option>
+                    <option value="日用品">日用品</option>
+                    <option value="食品">食品</option>
+                    <option value="洗剤">洗剤</option>
+                    <option value="衛生用品">衛生用品</option>
+                    <option value="その他">その他</option>
+                </select>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="low-stock-filter">
+                    在庫不足のみ表示
+                </label>
+            </div>
+        </div>
+
+        <div id="inventory-list" class="inventory-list">
+            <!-- アイテムがここに動的に追加されます -->
+        </div>
+
+        <div id="empty-state" class="empty-state">
+            <p>まだ日用品が登録されていません。上のフォームから追加してください。</p>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
