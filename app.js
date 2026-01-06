@@ -2,6 +2,7 @@
 class InventoryManager {
     constructor() {
         this.items = this.loadItems();
+        this.history = this.loadHistory();
         this.currentFilter = {
             category: 'all',
             lowStock: false
@@ -15,9 +16,33 @@ class InventoryManager {
         return stored ? JSON.parse(stored) : [];
     }
 
+    // LocalStorageから履歴を読み込み
+    loadHistory() {
+        const stored = localStorage.getItem('inventoryHistory');
+        return stored ? JSON.parse(stored) : [];
+    }
+
     // LocalStorageにアイテムを保存
     saveItems() {
         localStorage.setItem('inventoryItems', JSON.stringify(this.items));
+    }
+
+    // LocalStorageに履歴を保存
+    saveHistory() {
+        localStorage.setItem('inventoryHistory', JSON.stringify(this.history));
+    }
+
+    // 履歴を記録
+    recordHistory(itemId, oldQuantity, newQuantity) {
+        const change = newQuantity - oldQuantity;
+        this.history.push({
+            itemId,
+            timestamp: new Date().toISOString(),
+            oldQuantity,
+            newQuantity,
+            change
+        });
+        this.saveHistory();
     }
 
     // 初期化
@@ -107,7 +132,15 @@ class InventoryManager {
     updateQuantity(id, change) {
         const item = this.items.find(item => item.id === id);
         if (item) {
-            item.quantity = Math.max(0, item.quantity + change);
+            const oldQuantity = item.quantity;
+            const newQuantity = Math.max(0, item.quantity + change);
+            item.quantity = newQuantity;
+
+            // 履歴を記録（減少した場合のみ）
+            if (change < 0) {
+                this.recordHistory(id, oldQuantity, newQuantity);
+            }
+
             this.saveItems();
             this.render();
         }
@@ -131,6 +164,59 @@ class InventoryManager {
             out: '在庫切れ'
         };
         return labels[status];
+    }
+
+    // 消費ペースを計算（個/日）
+    calculateConsumptionRate(itemId) {
+        const itemHistory = this.history.filter(h => h.itemId === itemId && h.change < 0);
+
+        if (itemHistory.length < 2) {
+            return null; // データ不足
+        }
+
+        // 過去30日間のデータのみ使用
+        const thirtyDaysAgo = new Date();
+        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+        const recentHistory = itemHistory.filter(h =>
+            new Date(h.timestamp) >= thirtyDaysAgo
+        );
+
+        if (recentHistory.length < 2) {
+            return null;
+        }
+
+        // 総消費量
+        const totalConsumption = recentHistory.reduce((sum, h) => sum + Math.abs(h.change), 0);
+
+        // 期間（日数）
+        const firstTimestamp = new Date(recentHistory[0].timestamp);
+        const lastTimestamp = new Date(recentHistory[recentHistory.length - 1].timestamp);
+        const daysDiff = (lastTimestamp - firstTimestamp) / (1000 * 60 * 60 * 24);
+
+        if (daysDiff < 1) {
+            return null; // 1日未満のデータは不十分
+        }
+
+        return totalConsumption / daysDiff;
+    }
+
+    // 在庫切れ予測日を計算
+    getPredictedRunOutDate(item) {
+        const rate = this.calculateConsumptionRate(item.id);
+
+        if (!rate || rate === 0 || item.quantity === 0) {
+            return null;
+        }
+
+        const daysRemaining = item.quantity / rate;
+        const predictedDate = new Date();
+        predictedDate.setDate(predictedDate.getDate() + Math.floor(daysRemaining));
+
+        return {
+            days: Math.floor(daysRemaining),
+            date: predictedDate
+        };
     }
 
     // フィルタリングされたアイテムを取得
@@ -157,6 +243,18 @@ class InventoryManager {
     createItemCard(item) {
         const status = this.getItemStatus(item);
         const statusLabel = this.getStatusLabel(status);
+        const prediction = this.getPredictedRunOutDate(item);
+
+        let predictionHtml = '';
+        if (prediction) {
+            const warningClass = prediction.days <= 3 ? 'prediction-warning' : '';
+            const icon = prediction.days <= 3 ? '⚠️' : '📊';
+            predictionHtml = `
+                <div class="prediction-info ${warningClass}">
+                    ${icon} あと約<strong>${prediction.days}日</strong>で在庫切れ予測
+                </div>
+            `;
+        }
 
         return `
             <div class="inventory-item ${status === 'low' ? 'low-stock' : ''} ${status === 'out' ? 'out-of-stock' : ''}">
@@ -169,6 +267,8 @@ class InventoryManager {
                         <button class="btn btn-danger" onclick="app.deleteItem(${item.id})">削除</button>
                     </div>
                 </div>
+
+                ${predictionHtml}
 
                 <div class="item-details">
                     <div class="detail-item">
@@ -297,6 +397,9 @@ class InventoryManager {
         const inventoryList = document.getElementById('inventory-list');
         const emptyState = document.getElementById('empty-state');
 
+        // 警告バナーを更新
+        this.updateWarningBanner();
+
         if (filteredItems.length === 0) {
             inventoryList.innerHTML = '';
             emptyState.classList.remove('hidden');
@@ -310,6 +413,40 @@ class InventoryManager {
             emptyState.classList.add('hidden');
             inventoryList.innerHTML = filteredItems.map(item => this.createItemCard(item)).join('');
         }
+    }
+
+    // 警告バナーを更新
+    updateWarningBanner() {
+        const warningBanner = document.getElementById('warning-banner');
+        const warningItems = [];
+
+        this.items.forEach(item => {
+            const prediction = this.getPredictedRunOutDate(item);
+            if (prediction && prediction.days <= 3) {
+                warningItems.push({
+                    name: item.name,
+                    days: prediction.days
+                });
+            }
+        });
+
+        if (warningItems.length === 0) {
+            warningBanner.classList.add('hidden');
+            return;
+        }
+
+        warningBanner.classList.remove('hidden');
+        const itemList = warningItems.map(item =>
+            `<strong>${this.escapeHtml(item.name)}</strong>（あと${item.days}日）`
+        ).join('、');
+
+        warningBanner.innerHTML = `
+            <div class="warning-icon">⚠️</div>
+            <div class="warning-content">
+                <strong>在庫切れ警告</strong>
+                <p>以下の商品が3日以内に在庫切れ予測: ${itemList}</p>
+            </div>
+        `;
     }
 }
 
