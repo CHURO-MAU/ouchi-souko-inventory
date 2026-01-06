@@ -293,6 +293,54 @@ h2 {
     text-align: center;
 }
 
+.shopping-links {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+
+.shopping-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+    flex: 1;
+    min-width: 140px;
+    justify-content: center;
+}
+
+.amazon-link {
+    background: #ff9900;
+    color: white;
+}
+
+.amazon-link:hover {
+    background: #e88800;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 153, 0, 0.4);
+}
+
+.rakuten-link {
+    background: #bf0000;
+    color: white;
+}
+
+.rakuten-link:hover {
+    background: #a60000;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(191, 0, 0, 0.4);
+}
+
+.link-icon {
+    font-size: 1.1rem;
+}
+
 .empty-state {
     text-align: center;
     padding: 60px 20px;

@@ -53,6 +53,8 @@ class InventoryManager {
         const quantity = parseInt(document.getElementById('item-quantity').value);
         const minQuantity = parseInt(document.getElementById('item-min-quantity').value);
         const category = document.getElementById('item-category').value;
+        const amazonLink = document.getElementById('item-amazon-link').value.trim();
+        const rakutenLink = document.getElementById('item-rakuten-link').value.trim();
 
         if (!name) {
             alert('商品名を入力してください');
@@ -65,6 +67,8 @@ class InventoryManager {
             quantity,
             minQuantity,
             category,
+            amazonLink,
+            rakutenLink,
             createdAt: new Date().toISOString()
         };
 
@@ -176,8 +180,38 @@ class InventoryManager {
                     <span class="quantity-display">${item.quantity}</span>
                     <button class="quantity-btn" onclick="app.updateQuantity(${item.id}, 1)">＋</button>
                 </div>
+
+                ${this.createShoppingLinks(item)}
             </div>
         `;
+    }
+
+    // 購入リンクのHTMLを生成
+    createShoppingLinks(item) {
+        if (!item.amazonLink && !item.rakutenLink) {
+            return '';
+        }
+
+        let linksHtml = '<div class="shopping-links">';
+
+        if (item.amazonLink) {
+            linksHtml += `
+                <a href="${this.escapeHtml(item.amazonLink)}" target="_blank" rel="noopener noreferrer" class="shopping-link amazon-link">
+                    <span class="link-icon">🛒</span> Amazonで購入
+                </a>
+            `;
+        }
+
+        if (item.rakutenLink) {
+            linksHtml += `
+                <a href="${this.escapeHtml(item.rakutenLink)}" target="_blank" rel="noopener noreferrer" class="shopping-link rakuten-link">
+                    <span class="link-icon">🛒</span> 楽天で購入
+                </a>
+            `;
+        }
+
+        linksHtml += '</div>';
+        return linksHtml;
     }
 
     // HTMLエスケープ
