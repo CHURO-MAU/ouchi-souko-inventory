@@ -88,6 +88,8 @@ class InventoryManager {
         const quantity = parseInt(document.getElementById('item-quantity').value);
         const minQuantity = parseInt(document.getElementById('item-min-quantity').value);
         const category = document.getElementById('item-category').value;
+        const priceInput = document.getElementById('item-price').value.trim();
+        const price = priceInput ? parseFloat(priceInput) : null;
         const amazonLink = document.getElementById('item-amazon-link').value.trim();
         const rakutenLink = document.getElementById('item-rakuten-link').value.trim();
 
@@ -102,6 +104,8 @@ class InventoryManager {
             quantity,
             minQuantity,
             category,
+            price,
+            initialPrice: price, // 初回登録時の価格を保存
             amazonLink,
             rakutenLink,
             createdAt: new Date().toISOString()
@@ -283,6 +287,7 @@ class InventoryManager {
                         <div class="detail-label">状態</div>
                         <span class="status-badge status-${status}">${statusLabel}</span>
                     </div>
+                    ${this.createPriceDisplay(item)}
                 </div>
 
                 <div class="quantity-controls">
@@ -294,6 +299,64 @@ class InventoryManager {
                 ${this.createShoppingLinks(item)}
             </div>
         `;
+    }
+
+    // 価格表示のHTMLを生成
+    createPriceDisplay(item) {
+        if (!item.price && !item.initialPrice) {
+            return '';
+        }
+
+        const currentPrice = item.price !== null ? item.price : item.initialPrice;
+        const initialPrice = item.initialPrice;
+
+        let priceHtml = '<div class="detail-item price-detail">';
+        priceHtml += '<div class="detail-label">参考価格</div>';
+
+        if (currentPrice !== null) {
+            priceHtml += `<div class="price-value">¥${currentPrice.toLocaleString()}`;
+
+            // 価格変動の表示
+            if (initialPrice !== null && currentPrice !== initialPrice) {
+                const diff = currentPrice - initialPrice;
+                const percentage = ((diff / initialPrice) * 100).toFixed(1);
+                const changeClass = diff > 0 ? 'price-up' : 'price-down';
+                const arrow = diff > 0 ? '↑' : '↓';
+                priceHtml += `<span class="price-change ${changeClass}">${arrow} ¥${Math.abs(diff).toLocaleString()} (${Math.abs(percentage)}%)</span>`;
+            }
+
+            priceHtml += `<button class="btn-edit-price" onclick="app.editPrice(${item.id})" title="価格を更新">✏️</button>`;
+            priceHtml += '</div>';
+        }
+
+        priceHtml += '</div>';
+        return priceHtml;
+    }
+
+    // 価格を編集
+    editPrice(itemId) {
+        const item = this.items.find(i => i.id === itemId);
+        if (!item) return;
+
+        const currentPrice = item.price !== null ? item.price : '';
+        const newPrice = prompt(`「${item.name}」の価格を更新してください（現在: ¥${currentPrice}）`, currentPrice);
+
+        if (newPrice === null) return; // キャンセル
+
+        const parsedPrice = parseFloat(newPrice);
+        if (isNaN(parsedPrice) || parsedPrice < 0) {
+            alert('正しい価格を入力してください');
+            return;
+        }
+
+        item.price = parsedPrice;
+        if (item.initialPrice === null) {
+            item.initialPrice = parsedPrice;
+        }
+
+        this.saveItems();
+        this.render();
+        this.showMessage('価格を更新しました');
     }
 
     // 購入リンクのHTMLを生成

@@ -358,6 +358,55 @@ h2 {
     color: #333;
 }
 
+.price-detail {
+    grid-column: 1 / -1;
+}
+
+.price-value {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #333;
+}
+
+.price-change {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.price-change.price-up {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.price-change.price-down {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.btn-edit-price {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.btn-edit-price:hover {
+    background: #f0f0f0;
+    transform: scale(1.1);
+}
+
 .status-badge {
     display: inline-block;
     padding: 6px 12px;
