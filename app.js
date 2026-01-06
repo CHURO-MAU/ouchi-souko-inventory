@@ -45,6 +45,16 @@ class InventoryManager {
             this.currentFilter.lowStock = e.target.checked;
             this.render();
         });
+
+        // Amazon検索ボタン
+        document.getElementById('search-amazon').addEventListener('click', () => {
+            this.searchAmazon();
+        });
+
+        // 楽天検索ボタン
+        document.getElementById('search-rakuten').addEventListener('click', () => {
+            this.searchRakuten();
+        });
     }
 
     // 新しいアイテムを追加
@@ -212,6 +222,34 @@ class InventoryManager {
 
         linksHtml += '</div>';
         return linksHtml;
+    }
+
+    // Amazonで商品検索
+    searchAmazon() {
+        const itemName = document.getElementById('item-name').value.trim();
+        if (!itemName) {
+            alert('商品名を入力してください');
+            return;
+        }
+
+        const searchUrl = `https://www.amazon.co.jp/s?k=${encodeURIComponent(itemName)}`;
+        window.open(searchUrl, '_blank', 'noopener,noreferrer');
+
+        this.showMessage('Amazonで検索を開きました。商品を選んでURLをコピーしてください。');
+    }
+
+    // 楽天で商品検索
+    searchRakuten() {
+        const itemName = document.getElementById('item-name').value.trim();
+        if (!itemName) {
+            alert('商品名を入力してください');
+            return;
+        }
+
+        const searchUrl = `https://search.rakuten.co.jp/search/mall/${encodeURIComponent(itemName)}`;
+        window.open(searchUrl, '_blank', 'noopener,noreferrer');
+
+        this.showMessage('楽天で検索を開きました。商品を選んでURLをコピーしてください。');
     }
 
     // HTMLエスケープ

@@ -59,6 +59,57 @@ h2 {
     font-weight: 600;
 }
 
+.label-hint {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: #888;
+    margin-top: 4px;
+}
+
+.input-with-search {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.input-with-search input {
+    flex: 1;
+    min-width: 200px;
+}
+
+.btn-search {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    color: white;
+    white-space: nowrap;
+}
+
+.btn-search-amazon {
+    background: #ff9900;
+}
+
+.btn-search-amazon:hover {
+    background: #e88800;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 153, 0, 0.3);
+}
+
+.btn-search-rakuten {
+    background: #bf0000;
+}
+
+.btn-search-rakuten:hover {
+    background: #a60000;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(191, 0, 0, 0.3);
+}
+
 .form-group input,
 .form-group select {
     width: 100%;
@@ -359,6 +410,18 @@ h2 {
 
     header h1 {
         font-size: 2rem;
+    }
+
+    .input-with-search {
+        flex-direction: column;
+    }
+
+    .input-with-search input {
+        width: 100%;
+    }
+
+    .btn-search {
+        width: 100%;
     }
 
     .item-header {
