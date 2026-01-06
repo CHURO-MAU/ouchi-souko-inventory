@@ -211,8 +211,8 @@ h2 {
 .btn-danger {
     background: #dc3545;
     color: white;
-    padding: 8px 16px;
-    font-size: 0.9rem;
+    padding: 6px 12px;
+    font-size: 0.8rem;
 }
 
 .btn-danger:hover {
@@ -254,14 +254,14 @@ h2 {
 
 .inventory-list {
     display: grid;
-    gap: 20px;
+    gap: 12px;
 }
 
 .inventory-item {
     background: white;
     border: 2px solid #e0e0e0;
-    border-radius: 12px;
-    padding: 20px;
+    border-radius: 8px;
+    padding: 12px;
     transition: all 0.3s;
 }
 
@@ -284,21 +284,21 @@ h2 {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 .prediction-info {
     background: #e7f3ff;
-    border-left: 4px solid #2196f3;
-    padding: 12px 15px;
-    border-radius: 8px;
-    margin-bottom: 15px;
-    font-size: 0.95rem;
+    border-left: 3px solid #2196f3;
+    padding: 8px 10px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    font-size: 0.85rem;
     color: #1976d2;
 }
 
 .prediction-info strong {
-    font-size: 1.1rem;
+    font-size: 0.95rem;
 }
 
 .prediction-info.prediction-warning {
@@ -314,46 +314,46 @@ h2 {
 
 .item-title h3 {
     color: #333;
-    font-size: 1.3rem;
-    margin-bottom: 5px;
+    font-size: 1.1rem;
+    margin-bottom: 4px;
 }
 
 .item-category {
     display: inline-block;
-    padding: 4px 12px;
+    padding: 3px 10px;
     background: #667eea;
     color: white;
-    border-radius: 20px;
-    font-size: 0.85rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
     font-weight: 600;
 }
 
 .item-actions {
     display: flex;
-    gap: 10px;
+    gap: 8px;
 }
 
 .item-details {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 15px;
-    margin-bottom: 15px;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 10px;
+    margin-bottom: 10px;
 }
 
 .detail-item {
     background: #f8f9fa;
-    padding: 12px;
-    border-radius: 8px;
+    padding: 8px;
+    border-radius: 6px;
 }
 
 .detail-label {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     color: #777;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
 }
 
 .detail-value {
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 700;
     color: #333;
 }
@@ -365,9 +365,9 @@ h2 {
 .price-value {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 6px;
     flex-wrap: wrap;
-    font-size: 1.3rem;
+    font-size: 1rem;
     font-weight: 700;
     color: #333;
 }
@@ -375,10 +375,10 @@ h2 {
 .price-change {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
-    padding: 4px 10px;
-    border-radius: 12px;
-    font-size: 0.85rem;
+    gap: 2px;
+    padding: 2px 6px;
+    border-radius: 8px;
+    font-size: 0.7rem;
     font-weight: 600;
 }
 
@@ -396,8 +396,8 @@ h2 {
     background: transparent;
     border: none;
     cursor: pointer;
-    font-size: 1.2rem;
-    padding: 4px 8px;
+    font-size: 1rem;
+    padding: 2px 6px;
     border-radius: 4px;
     transition: all 0.2s;
 }
@@ -409,9 +409,9 @@ h2 {
 
 .status-badge {
     display: inline-block;
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 0.85rem;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
     font-weight: 600;
 }
 
@@ -433,17 +433,17 @@ h2 {
 .quantity-controls {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 }
 
 .quantity-btn {
-    width: 36px;
-    height: 36px;
+    width: 30px;
+    height: 30px;
     border: none;
     border-radius: 50%;
     background: #667eea;
     color: white;
-    font-size: 1.2rem;
+    font-size: 1rem;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -457,31 +457,31 @@ h2 {
 }
 
 .quantity-display {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: 700;
-    min-width: 40px;
+    min-width: 30px;
     text-align: center;
 }
 
 .shopping-links {
     display: flex;
-    gap: 10px;
-    margin-top: 15px;
+    gap: 8px;
+    margin-top: 10px;
     flex-wrap: wrap;
 }
 
 .shopping-link {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    padding: 10px 20px;
-    border-radius: 8px;
+    gap: 4px;
+    padding: 8px 14px;
+    border-radius: 6px;
     text-decoration: none;
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     transition: all 0.3s;
     flex: 1;
-    min-width: 140px;
+    min-width: 120px;
     justify-content: center;
 }
 
@@ -508,7 +508,7 @@ h2 {
 }
 
 .link-icon {
-    font-size: 1.1rem;
+    font-size: 0.9rem;
 }
 
 .empty-state {
