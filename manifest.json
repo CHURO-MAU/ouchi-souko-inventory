@@ -2,12 +2,12 @@
   "name": "おうち倉庫 - 日用品在庫管理",
   "short_name": "おうち倉庫",
   "description": "シンプルで使いやすい日用品の在庫管理アプリ。消費予測機能で買い忘れを防止します。",
-  "start_url": "/",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#6b8e7c",
   "orientation": "portrait-primary",
-  "scope": "/",
+  "scope": "./",
   "icons": [
     {
       "src": "icons/icon-72x72.png",
@@ -65,7 +65,7 @@
       "name": "商品を追加",
       "short_name": "追加",
       "description": "新しい日用品を追加",
-      "url": "/?action=add",
+      "url": "./?action=add",
       "icons": [
         {
           "src": "icons/icon-192x192.png",

@@ -1,14 +1,14 @@
 // Service Worker for おうち倉庫
-const CACHE_NAME = 'ouchi-souko-v1';
-const RUNTIME_CACHE = 'ouchi-souko-runtime';
+const CACHE_NAME = 'ouchi-souko-v2';
+const RUNTIME_CACHE = 'ouchi-souko-runtime-v2';
 
 // キャッシュするリソースのリスト
 const PRECACHE_URLS = [
-  '/',
-  '/index.html',
-  '/style.css',
-  '/app.js',
-  '/manifest.json'
+  './',
+  './index.html',
+  './style.css',
+  './app.js',
+  './manifest.json'
 ];
 
 // インストール時：静的リソースをキャッシュ
@@ -88,7 +88,7 @@ self.addEventListener('fetch', (event) => {
 
             // オフライン時のフォールバック
             if (event.request.destination === 'document') {
-              return caches.match('/index.html');
+              return caches.match('./index.html');
             }
 
             throw error;
